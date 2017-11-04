@@ -15,15 +15,13 @@ gulp.task('browser-sync', ['styles', 'scripts'], function() {
 });
 
 gulp.task('styles', function () {
-	return gulp.src('less/**/*.less')
-	.pipe(less({
-		includePaths: require('node-bourbon').includePaths
-	}))
+	return gulp.src('less/*.less')
+	.pipe(less())
 	.pipe(rename({suffix: '.min', prefix : ''}))
 	.pipe(autoprefixer({browsers: ['last 15 versions'], cascade: false}))
-	.pipe(cleanCSS())
 	.pipe(gulp.dest('app/css'))
 	.pipe(browserSync.stream());
+// добавить после автопрефикса .pipe(cleanCSS())
 });
 
 gulp.task('scripts', function() {
