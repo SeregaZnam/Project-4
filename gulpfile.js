@@ -34,7 +34,7 @@ gulp.task('scripts', function() {
 });
 
 gulp.task('watch', function () {
-	gulp.watch('less/*.less', ['styles']);
+	gulp.watch('less/**/*.less', ['styles']);
 	gulp.watch('app/libs/**/*.js', ['scripts']);
 	gulp.watch('app/js/*.js').on("change", browserSync.reload);
 	gulp.watch('app/**/*.php').on('change', browserSync.reload);
