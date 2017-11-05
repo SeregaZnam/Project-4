@@ -45,27 +45,81 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="../css/main.min.css">
+    <link rel="stylesheet" href="../css/materialize.min.css">
 </head>
 <body>
-    <div class="registration__block">
-        <div class="registration__form">
-            <form action="" method="GET">
-                <div class="registration__form_name"><input type="text" name="name" placeholder="Имя" value="<?php if(!empty($_SESSION['name'])) echo $_SESSION['name'];?>"></div>
-                <div class="registration__form_surname"><input type="text" name="surname" placeholder="Фамилия" value="<?php if(!empty($_SESSION['surname'])) echo $_SESSION['surname'];?>"></div>
-                <div class="registration__form_nickname"><input type="text" name="nickname" placeholder="Никнейм" value="<?php if(!empty($_SESSION['nickname'])) echo $_SESSION['nickname'];?>"></div>
-                <div class="registration__form_password"><input type="password" name="password" placeholder="Пароль"></div>
-                <div class="registration__form_confpassword"><input type="password" name="confirm_password" placeholder="Подтвердите пароль"></div>
-                <div class="registration__form_email"><input type="text" name="email" placeholder="Email" value="<?php if(!empty($_SESSION['email'])) echo $_SESSION['email'];?>"></div>
-                <div class="registration__form_age"><input type="text" name="age" placeholder="Возраст" value="<?php if(!empty($_SESSION['age'])) echo $_SESSION['age'];?>"></div>
-                <div class="registration__form_male">
-                    <select name="male">
-                        <option value="Мужской">Мужской</option>
-                        <option value="Женский">Женский</option>
-                    </select>
-                </div>
-                <input class="registration__form_submit" type="submit" value="Отправить">
-            </form>
+    <nav>
+      <div class="nav-wrapper">
+        <a href="../index.php" class="brand-logo">Logo</a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="authorization.php" class="registration_btn waves-effect waves-light btn">Sign In</a></li>
+          <li><a href="registration.php" class="registration_btn waves-effect waves-light btn">Sign Up</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="registration">
+        <div class="registration__block">
+            <div class="registration__block_header">
+                New Account
+            </div>
+            <div class="registration__block_wrap">
+                <form action="" method="GET" class="registration__form">
+                    <div class="registration__form_name"><input type="text" name="name" placeholder="Name" value="<?php if(!empty($_SESSION['name'])) echo $_SESSION['name'];?>"></div>
+                    <div class="registration__form_surname"><input type="text" name="surname" placeholder="Surname" value="<?php if(!empty($_SESSION['surname'])) echo $_SESSION['surname'];?>"></div>
+                    <div class="registration__form_nickname"><input type="text" name="nickname" placeholder="Nickname" value="<?php if(!empty($_SESSION['nickname'])) echo $_SESSION['nickname'];?>"></div>
+                    <div class="registration__form_password"><input type="password" name="password" placeholder="Password"></div>
+                    <div class="registration__form_confpassword"><input type="password" name="confirm_password" placeholder="Confirm password"></div>
+                    <div class="registration__form_email"><input type="text" name="email" placeholder="Email" value="<?php if(!empty($_SESSION['email'])) echo $_SESSION['email'];?>"></div>
+                    <div class="registration__form_age"><input type="text" name="age" placeholder="Age" value="<?php if(!empty($_SESSION['age'])) echo $_SESSION['age'];?>"></div>
+                    <div class="registration__form_male"><input id="registration__form_select" type="text" name="age" placeholder="Male"></div>
+                    <input class="registration__form_submit btn btn-success" type="submit" value="Create Account">
+                </form>
+            </div>
         </div>
-    </div>
+        </div>
+    <script src="../libs/jquery-3.2.1.min.js"></script>
+    <script src="../libs/materialize.min.js"></script>
+    <script>
+        $('#id').click(function(){
+            var option = document.createElement("div");
+            option.style.width = "100px";
+            option.style.height = "100px";
+            option.style.backgroundColor = "black";
+            $(this).append(option);
+        });
+
+        $('.registration__form_male').click(function(){
+
+            if($(this).children().length == 1) {
+                var optionOne = document.createElement("div");
+                var optionTwo = document.createElement("div");
+                optionOne.innerHTML = 'Male';
+                optionTwo.innerHTML = 'Female';
+                optionOne.style.cssText = "width: 249px; \
+                                        height: 30px; \
+                                        background-color: white; \
+                                        position: relative; \
+                                        top: -20px; \
+                                        padding-left: 20px; \
+                                        line-height: 30px;";
+                optionOne.addEventListener('mouseover', function(){
+                    this.style.background = "grey";
+                    this.addEventListener('mouseout', function(){
+                        this.style.background = "white";
+                    })
+                })
+                optionTwo.addEventListener('mouseover', function(){
+                    this.style.background = "grey";
+                    this.addEventListener('mouseout', function(){
+                        this.style.background = "white";
+                    })
+                })
+                optionTwo.style.cssText = optionOne.style.cssText;
+                $(this).append(optionOne);
+                $(this).append(optionTwo);
+            }
+        });
+    </script>
 </body>
 </html>
