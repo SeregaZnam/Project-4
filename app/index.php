@@ -13,6 +13,7 @@
       <div class="nav-wrapper">
         <a href="index.php" class="brand-logo">Logo</a>
         <ul class="right hide-on-med-and-down">
+          <li><a href="templates/main-window.php" class="registration_btn waves-effect waves-light btn">Open</a></li>
           <li><a href="templates/authorization.php" class="registration_btn waves-effect waves-light btn">Sign In</a></li>
           <li><a href="templates/registration.php" class="registration_btn waves-effect waves-light btn">Sign Up</a></li>
         </ul>

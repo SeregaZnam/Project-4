@@ -73,79 +73,13 @@
                     <div class="registration__form_email"><input type="text" name="email" placeholder="Email" value="<?php if(!empty($_SESSION['email'])) echo $_SESSION['email'];?>"></div>
                     <div class="registration__form_age"><input type="text" name="age" placeholder="Age" value="<?php if(!empty($_SESSION['age'])) echo $_SESSION['age'];?>"></div>
                     <!-- добавлен stopPropagation() для удаления искусственно созданных option при нажатии на другие части экрана -->
-                    <div onclick="event.stopPropagation()" class="registration__form_male"><input id="registration__form_select" type="text" name="age" placeholder="Male"></div>
+                    <div onclick="event.stopPropagation()" class="registration__form_male"><input id="registration__form_select" type="text" name="age" placeholder="What is your gender?"></div>
                     <input class="registration__form_submit btn btn-success" type="submit" value="Create Account">
                 </form>
             </div>
         </div>
         </div>
     <script src="../libs/jquery-3.2.1.min.js"></script>
-    <script src="../libs/materialize.min.js"></script>
-    <script>
-        $('#registration__form_select').focus(function(){
-            if($(this).parent().children().length == 1) {
-                var optionOne = document.createElement("div");
-                var optionTwo = document.createElement("div");
-                optionOne.innerHTML = 'Male';
-                optionOne.className = 'form__option';
-                optionTwo.className = 'form__option';
-                optionTwo.innerHTML = 'Female';
-                optionOne.style.cssText = "width: 249px; \
-                                        height: 30px; \
-                                        background-color: white; \
-                                        position: relative; \
-                                        top: -20px; \
-                                        padding-left: 20px; \
-                                        line-height: 30px;";
-                optionOne.addEventListener('mouseover', function(){
-                    optionColor(this);
-                    selectValue(this);
-                })
-                optionTwo.addEventListener('mouseover', function(){
-                    optionColor(this);
-                    selectValue(this);
-                });
-                
-                optionTwo.style.cssText = optionOne.style.cssText;
-                $(this).parent().append(optionOne);
-                $(this).parent().append(optionTwo);
-            }
-        });
-
-        document.documentElement.addEventListener('click', function(){
-            if(event.target.className != 'form__option'){
-                $('#registration__form_select').parent().children().each(function(index){
-                    if(index == 0) {
-                        return true;
-                    }
-                    $(this).remove();
-                });
-            }
-        });
-
-        function optionColor(obj){
-            obj.style.background = "grey";
-            obj.addEventListener('mouseout', function(){
-                obj.style.background = "white";
-            });
-        }
-
-        function selectValue(obj){
-            var context = $('#registration__form_select');
-            obj.addEventListener('click', function(){
-                $('#registration__form_select').val(obj.innerHTML);
-                deleteOption(context);
-            });
-        }
-
-        function deleteOption(context){
-            context.parent().children().each(function(index){
-                if(index == 0) {
-                    return true;
-                }
-                $(this).remove();
-            });
-        }
-    </script>
+    <script src="../js/main.js"></script>
 </body>
 </html>
