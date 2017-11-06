@@ -4,14 +4,26 @@
     require('../classes/databaseConnect.php');
 
     $db = new databaseConnect();
+    // $condition = "nickname='".$nickname."' AND password='".$password."'";
+    // var_dump($db -> get(registryPeople, $condition));
     //Если форма отправлена и пароль из формы совпадает с паролем в файле...
     if (!empty($_REQUEST['nickname'] ) and !empty($_REQUEST['password'])) {
         $nickname = $_REQUEST['nickname'];
         $password = md5($_REQUEST['password']);
         $condition = "nickname='".$nickname."' AND password='".$password."'";
         if($db -> get(registryPeople, $condition)){
+
+            // Создаем запрос для получения значения id_content для авторизованного пользователя
+            $id_content = $db -> get(registryPeople, $condition);
+
             session_start();
             $_SESSION['auth'] = true;
+            $_SESSION['nickname'] = $nickname;
+            $_SESSION['email'] = $id_content[0]['email'];
+            // Сохраняем полученно значение id_content в сессию
+            $_SESSION['id_content'] = $id_content[0]['id_content'];
+
+
             header('Location: main-window.php');
         } else {
             echo 'Неверные данные!';

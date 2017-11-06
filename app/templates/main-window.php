@@ -1,7 +1,7 @@
 <?php
     header('Content-type: text/html; charset=utf-8');
+    require('../classes/databaseConnect.php');
     session_start(); //стартуем сессию
-
     //Если переменная auth из сессии не пуста и равна true, то дадим доступ:
     if (!empty($_SESSION['auth']) and $_SESSION['auth']) {
 ?>
@@ -27,16 +27,14 @@
           </div>
         </nav>
 
-
-
         <ul id="slide-out" class="side-nav">
             <li><div class="user-view">
               <div class="background">
                 <img src="../img/office.png">
               </div>
               <a href="#!user"><img class="circle" src="../img/1.png"></a>
-              <a href="#!name"><span class="white-text name">John Doe</span></a>
-              <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>
+              <a href="#!name"><span class="white-text name"><?php echo $_SESSION['nickname'];?></span></a>
+              <a href="#!email"><span class="white-text email"><?php echo $_SESSION['email']; ?></span></a>
             </div></li>
             <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
             <li><a href="#!">Second Link</a></li>
@@ -46,34 +44,39 @@
         </ul>
         <a href="#" data-activates="slide-out" class="button-collapse registration_btn waves-effect waves-light btn">menu</a>
 
-        <div class="cards__block">
-            <div class="cards__block_one">
-                <div class="cards__block_header">Title</div>
-                <div class="cards__block_date">date</div>
-                <div class="cards__block_content">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla efficitur elementum lorem id venenatis. Nullam id sagittis urna, eu ultrices risus. Duis ante lorem, semper nec fringilla eu, commodo vel mauris. Nunc tristique odio lectus, eget condimentum nunc consectetur eu. Nullam non varius nisl, aliquet fringilla lectus. Aliquam Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab recusandae, ad totam placeat, inventore dolores eaque! Praesentium quae iure dolore corporis tempore tempora at, distinctio maiores aliquid assumenda voluptatum, consectetur veritatis ipsum illo voluptas earum repudiandae reiciendis facere, voluptate quaerat commodi molestias provident. Atque dolor magni cupiditate enim tempore reprehenderit dolores, aliquam quaerat a qui deleniti accusantium modi temporibus, veritatis ab ex odit id et maxime unde, aspernatur sequi culpa! Non nemo, possimus repellendus, quo eum dolore ut asperiores nobis vero sunt nostrum id illum! Eius facilis enim cupiditate dolorem accusamus iure tempore, labore at repudiandae! Neque totam praesentium minima.erat volutpat. Ut vel mi et lectus hendrerit ornare vel ut neque. Quisque venenatis nisl eu mi
-                </div>
-                <div class="cards__block_button">
-                    <a class="waves-effect waves-light btn">button</a>
-                    <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
-                </div>
-
-
-
-                    <div id="modal1" class="modal modal-fixed-footer">
-                        <div class="modal-content">
-                          <h4>Modal Header</h4>
-                          <p>A bunch of text</p>
-                        </div>
-                        <div class="modal-footer">
-                          <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
-                        </div>
-                      </div>
-
-
+        <div id="modal1" class="modal modal-fixed-footer">
+            <div class="modal-content">
+              <h4>Modal Header</h4>
+              <p>A bunch of text</p>
             </div>
-            <div class="cards__block_one"></div>
-            <div class="cards__block_one"></div>
+            <div class="modal-footer">
+              <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
+            </div>
+        </div>
+
+        <?php 
+            $db = new databaseConnect();
+            $condition = 'id_content='.$_SESSION['id_content'];
+            $data = $db -> get(cardsContent, $condition);
+        ?>
+
+        <div class="cards__block">
+
+            <?php 
+                for($i = 0; $i < count($data); $i++):
+            ?>
+                <div class="cards__block_one">
+                    <div class="cards__block_header"><?php echo $data[$i]['title']; ?></div>
+                    <div class="cards__block_date"><?php echo $data[$i]['datatime']; ?></div>
+                    <div class="cards__block_content"><?php echo $data[$i]['text']; ?></div>
+                    <div class="cards__block_button">
+                        <a class="waves-effect waves-light btn">button</a>
+                        <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
+                    </div>
+                </div>
+            <?php 
+                endfor;
+            ?>
         </div>
 
     </div>

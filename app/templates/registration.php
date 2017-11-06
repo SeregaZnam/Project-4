@@ -3,7 +3,7 @@
     require("../classes/formBuild.php");
     require("../classes/databaseConnect.php");
 
-    $db = new databaseConnect;
+    $db = new databaseConnect();
 
     if(
         !empty($_REQUEST['name']) and
@@ -27,8 +27,22 @@
             if($db -> get(registryPeople, $condition)){
                 echo 'Данный логин уже занят';
             } else {
+
+                // Создаем значения для поля id_content для связывания двух таблиц
+                $maxId = $db -> get('registryPeople', 'MAX(id_content)', true);
+                // т.к. возвращаемый объект возвращается в виде двойного массива проводим перебор два раза
+                $id_content;
+                foreach ($maxId as $key => $value) {
+                    foreach ($value as $key => $id) {
+                        $id_content = $id;
+                    }
+                }
+
+                // Прибавляем единицу к $id_content для уникального идентификатора
+                $id_content += 1;
+
                 //В БД хэшируем пароль с помощью функции md5
-                $db->save('registryPeople', ['name' => $_REQUEST['name'], 'surname' => $_REQUEST['surname'], 'nickname' => $_REQUEST['nickname'], 'password' => md5($_REQUEST['password']), 'email' => $_REQUEST['email'], 'male' => $_REQUEST['male']]);
+                $db->save('registryPeople', ['id_content' => $id_content, 'name' => $_REQUEST['name'], 'surname' => $_REQUEST['surname'], 'nickname' => $_REQUEST['nickname'], 'password' => md5($_REQUEST['password']), 'email' => $_REQUEST['email'],'age' => $_REQUEST['age'], 'male' => $_REQUEST['male']]);
                 header('Location: authorization.php');
             }
         } else {
@@ -73,7 +87,7 @@
                     <div class="registration__form_email"><input type="text" name="email" placeholder="Email" value="<?php if(!empty($_SESSION['email'])) echo $_SESSION['email'];?>"></div>
                     <div class="registration__form_age"><input type="text" name="age" placeholder="Age" value="<?php if(!empty($_SESSION['age'])) echo $_SESSION['age'];?>"></div>
                     <!-- добавлен stopPropagation() для удаления искусственно созданных option при нажатии на другие части экрана -->
-                    <div onclick="event.stopPropagation()" class="registration__form_male"><input id="registration__form_select" type="text" name="age" placeholder="What is your gender?"></div>
+                    <div onclick="event.stopPropagation()" class="registration__form_male"><input id="registration__form_select" type="text" name="male" placeholder="What is your gender?"></div>
                     <input class="registration__form_submit btn btn-success" type="submit" value="Create Account">
                 </form>
             </div>
