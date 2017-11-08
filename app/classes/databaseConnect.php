@@ -41,6 +41,16 @@ class databaseConnect{
         $this->query($query);
     }
 
+    public function update($query){
+        $result = $this->query($query);
+        return true;
+    }
+
+    public function delete($query){
+        $result = $this->query($query);
+        return true;
+    }
+
     private function query($query){
         $result = mysqli_query($this->link, $query)or die(mysqli_error($this->link));
         return $result;

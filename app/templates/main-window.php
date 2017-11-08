@@ -2,6 +2,46 @@
     header('Content-type: text/html; charset=utf-8');
     require('../classes/databaseConnect.php');
     session_start(); //стартуем сессию
+
+    $db = new databaseConnect();
+    // Получение данных для данного пользователя
+    $condition = 'id_content='.$_SESSION['id_content'];
+    $data = $db -> get(cardsContent, $condition);
+
+
+    // Условие для выполнения обновления данных таски в БД
+    if(
+        !empty($_REQUEST['id']) and
+        !empty($_REQUEST['title']) and
+        !empty($_REQUEST['text'])
+    ){
+        // Необходимо вставить id контента
+        $query = "UPDATE cardsContent SET title='".$_REQUEST['title']."', text='".$_REQUEST['text']."' WHERE id_content=".$_SESSION['id_content']." AND id=".$_REQUEST['id'];
+        $db -> update($query);
+        header('Location: main-window.php');
+    }
+
+    // Условие для добавления таски в БД
+    if(
+        !empty($_REQUEST['title_insert']) and
+        !empty($_REQUEST['text_insert'])
+    ){
+        $addedData = ['id_content' => $_SESSION['id_content'], 'title' => $_REQUEST['title_insert'], 'text' => nl2br($_REQUEST['text_insert'])];
+        $db -> save(cardsContent, $addedData);
+        header('Location: main-window.php');
+    }
+
+    // Удаление такси из БД
+    if(
+        !empty($_REQUEST['delete']) and
+        !empty($_REQUEST['id'])
+    ){
+        $query = "DELETE FROM cardsContent WHERE id=".$_REQUEST['id'];
+        $db -> delete($query);
+        header('Location: main-window.php');
+    }
+
+
     //Если переменная auth из сессии не пуста и равна true, то дадим доступ:
     if (!empty($_SESSION['auth']) and $_SESSION['auth']) {
 ?>
@@ -41,24 +81,22 @@
             <li><div class="divider"></div></li>
             <li><a class="subheader">Subheader</a></li>
             <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+            <li><a class="waves-effect waves-light modal-trigger" href="#modal__insert">Create new task</a></li>
         </ul>
         <a href="#" data-activates="slide-out" class="button-collapse registration_btn waves-effect waves-light btn">menu</a>
 
-        <div id="modal1" class="modal modal-fixed-footer">
-            <div class="modal-content">
-              <h4>Modal Header</h4>
-              <p>A bunch of text</p>
-            </div>
-            <div class="modal-footer">
-              <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
-            </div>
+        <div id="modal__insert" class="modal modal-fixed-footer">
+            <form action="" method="GET">
+                <div class="modal-content">
+                  <h4><input type="text" name="title_insert"></h4>
+                  <textarea name="text_insert" class="modal__content"></textarea>
+                </div>
+                <div class="modal-footer">
+                <input type="submit" value="Add Task" class="modal-action modal-close waves-effect waves-green btn-flat">
+                  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
+                </div>
+            </form>
         </div>
-
-        <?php 
-            $db = new databaseConnect();
-            $condition = 'id_content='.$_SESSION['id_content'];
-            $data = $db -> get(cardsContent, $condition);
-        ?>
 
         <div class="cards__block">
 
@@ -68,12 +106,42 @@
                 <div class="cards__block_one">
                     <div class="cards__block_header"><?php echo $data[$i]['title']; ?></div>
                     <div class="cards__block_date"><?php echo $data[$i]['datatime']; ?></div>
-                    <div class="cards__block_content"><?php echo $data[$i]['text']; ?></div>
+                    <textarea class="cards__block_content" disabled><?php echo $data[$i]['text']; ?></textarea>
                     <div class="cards__block_button">
-                        <a class="waves-effect waves-light btn">button</a>
-                        <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
+                        <a class="waves-effect waves-light btn modal-trigger" href="#modalr_<?php echo $i; ?>"">Read</a>
+                        <a class="waves-effect waves-light btn modal-trigger" href="#modal_<?php echo $i; ?>">Edit</a>
+                        <a class="waves-effect waves-light btn modal-trigger" href="main-window.php?delete=true&id=<?php echo $data[$i]['id']; ?>">Delete</a>
                     </div>
                 </div>
+
+                <!-- Модальное окно для редактирования -->
+                <div id="modal_<?php echo $i; ?>" class="modal modal-fixed-footer">
+                    <form action="" method="GET">
+                        <div class="modal-content">
+                          <input type="text" name="id" class="modal__id" value="<?php echo $data[$i]['id']; ?>">
+                          <h4><input type="text" name="title" value="<?php echo $data[$i]['title']; ?>"></h4>
+                          <textarea name="text" class="modal__content"><?php echo $data[$i]['text']; ?></textarea>
+                        </div>
+                        <div class="modal-footer">
+                        <input type="submit" value="Edit" class="modal-action modal-close waves-effect waves-green btn-flat">
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Модальное окно для чтения -->
+                <div id="modalr_<?php echo $i; ?>" class="modal modal-fixed-footer">
+                    <form action="" method="GET">
+                        <div class="modal-content">
+                          <h4><?php echo $data[$i]['title']; ?></h4>
+                          <p><?php echo $data[$i]['text']; ?></p>
+                        </div>
+                        <div class="modal-footer">
+                          <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
+                        </div>
+                    </form>
+                </div>
+
+
             <?php 
                 endfor;
             ?>
