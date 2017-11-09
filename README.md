@@ -19,11 +19,32 @@
 Для работы с проектом необходимо:
 1. предварительно установить node.js для работы пакетного менеджера npm
 2. установить OpenServer для отображения в браузере файлов .php
-2. скачать проект с помощью команды <p>git clone https://github.com/SeregaZnam/Project-2.git<p>
+2. скачать проект с помощью команды <p>git clone https://github.com/SeregaZnam/Project-4.git<p>
 либо скачать архив с git репозитория и разархивировать у себя в директории OpenServer
 3. в консоли ввести команду npm install для скачивания всех необходимых библиотек
 4. запустить OpenServer
 
+### Структура базы данных
+```
+.
+└── Project-5
+    ├── cardsContent
+    |    ├── id
+    |    ├── id_content
+    |    ├── title
+    |    ├── text
+    |    └── datatime
+    └── registryPeople
+        ├── id
+        ├── id_content
+        ├── name
+        ├── surname
+        ├── nickname
+        ├── password
+        ├── email
+        ├── age
+        └── male
+```
 ### Карта проекта
 ```
 .
