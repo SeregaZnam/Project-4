@@ -359,6 +359,15 @@ option {
 .modal__id {
   display: none;
 }
+.modal__photo {
+  height: 150px !important;
+}
+.modal__photo .modal__form {
+  padding-top: 50px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  text-align: center;
+}
 .firstlist {
   display: -webkit-box;
   display: -webkit-flex;

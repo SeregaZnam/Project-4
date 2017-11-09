@@ -73,19 +73,36 @@
               <div class="background">
                 <img src="../img/office.png">
               </div>
-              <a href="#!user"><img class="circle" src="../img/1.png"></a>
+              <a href="#!user"><img class="circle" src="../img/pic.jpg"></a>
               <a href="#!name"><span class="white-text name"><?php echo $_SESSION['nickname'];?></span></a>
               <a href="#!email"><span class="white-text email"><?php echo $_SESSION['email']; ?></span></a>
             </div></li>
-            <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-            <li><a href="#!">Second Link</a></li>
+            <li><a class="waves-effect waves-light modal-trigger" href="#modal__photo">Add new photo</a></li>
             <li><div class="divider"></div></li>
             <li><a class="subheader">Subheader</a></li>
-            <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
             <li><a class="waves-effect waves-light modal-trigger" href="#modal__insert">Create new task</a></li>
         </ul>
         <a href="#" data-activates="slide-out" class="button-collapse registration_btn waves-effect waves-light btn">menu</a>
 
+        <!-- Добавление картинки  -->
+        <?php 
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                if($_FILES['picture']['error'] == 0){
+                    $tmpName = $_FILES['picture']['tmp_name'];
+                    move_uploaded_file($tmpName, '../img/pic.jpg');
+                }
+            }
+        ?>
+        <!-- Модальное окно для добавления картинки -->
+        <div id="modal__photo" class="modal__photo modal modal-fixed-footer">
+            <form class="modal__form" method="POST" enctype="multipart/form-data">
+                <input type="file" name="picture">
+                <button>Upload</button>
+            </form>
+        </div>
+
+
+        <!-- Модальное окно для добавления таски -->
         <div id="modal__insert" class="modal modal-fixed-footer">
             <form action="" method="GET">
                 <div class="modal-content">
