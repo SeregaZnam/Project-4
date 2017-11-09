@@ -4,9 +4,6 @@
     session_start(); //стартуем сессию
 
     $db = new databaseConnect();
-    // Получение данных для данного пользователя
-    $condition = 'id_content='.$_SESSION['id_content'];
-    $data = $db -> get(cardsContent, $condition);
 
 
     // Условие для выполнения обновления данных таски в БД
@@ -16,7 +13,7 @@
         !empty($_REQUEST['text'])
     ){
         // Необходимо вставить id контента
-        $query = "UPDATE cardsContent SET title='".$_REQUEST['title']."', text='".$_REQUEST['text']."' WHERE id_content=".$_SESSION['id_content']." AND id=".$_REQUEST['id'];
+        $query = "UPDATE cardsContent SET title='".$_REQUEST['title']."', text='".$_REQUEST['text']."' WHERE id_content='".$_SESSION['id_content']."' AND id='".$_REQUEST['id']."'";
         $db -> update($query);
         header('Location: main-window.php');
     }
@@ -26,13 +23,13 @@
         !empty($_REQUEST['title_insert']) and
         !empty($_REQUEST['text_insert'])
     ){
-        $addedData = ['id_content' => $_SESSION['id_content'], 'title' => $_REQUEST['title_insert'], 'text' => nl2br($_REQUEST['text_insert'])];
+        $addedData = ['id_content' => $_SESSION['id_content'], 'title' => $_REQUEST['title_insert'], 'text' => $_REQUEST['text_insert']];
         $db -> save(cardsContent, $addedData);
         header('Location: main-window.php');
     }
 
     // Удаление такси из БД
-    if(
+    if( 
         !empty($_REQUEST['delete']) and
         !empty($_REQUEST['id'])
     ){
@@ -44,6 +41,10 @@
 
     //Если переменная auth из сессии не пуста и равна true, то дадим доступ:
     if (!empty($_SESSION['auth']) and $_SESSION['auth']) {
+
+        // Получение данных для данного пользователя
+        $condition = 'id_content='.$_SESSION['id_content'];
+        $data = $db -> get(cardsContent, $condition);
 ?>
 <!doctype html>
 <html lang="en">
@@ -133,7 +134,7 @@
                     <form action="" method="GET">
                         <div class="modal-content">
                           <h4><?php echo $data[$i]['title']; ?></h4>
-                          <p><?php echo $data[$i]['text']; ?></p>
+                          <textarea class="modalr_text" disabled><?php echo $data[$i]['text']; ?></textarea>
                         </div>
                         <div class="modal-footer">
                           <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
@@ -162,5 +163,5 @@
 </body>
 </html>
 <?php
-    } else echo 'Доступ запрещен!';
+    } else header('Location: authorization.php');
 ?>

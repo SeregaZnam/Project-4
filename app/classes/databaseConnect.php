@@ -21,9 +21,9 @@ class databaseConnect{
 
     public function get($table, $condition, $flag = false){
         if($flag){
-            $query = "SELECT $condition FROM $table";
+            $query = "SELECT '".$condition."' FROM '".$table."'";
         } else {
-            $query = "SELECT * FROM $table WHERE $condition ";
+            $query = "SELECT * FROM $table WHERE $condition";
         }
         $result = $this->query($query);
         for ($data = []; $row = mysqli_fetch_assoc($result); $data[] = $row );
