@@ -73,7 +73,7 @@
               <div class="background">
                 <img src="../img/office.png">
               </div>
-              <a href="#!user"><img class="circle" src="../img/pic.jpg"></a>
+              <a href="#!user"><img class="circle" src="../img/<?php echo $_SESSION['nickname']; ?>.jpg"></a>
               <a href="#!name"><span class="white-text name"><?php echo $_SESSION['nickname'];?></span></a>
               <a href="#!email"><span class="white-text email"><?php echo $_SESSION['email']; ?></span></a>
             </div></li>
@@ -89,7 +89,7 @@
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 if($_FILES['picture']['error'] == 0){
                     $tmpName = $_FILES['picture']['tmp_name'];
-                    move_uploaded_file($tmpName, '../img/pic.jpg');
+                    move_uploaded_file($tmpName, '../img/'.$_SESSION['nickname'].'.jpg');
                 }
             }
         ?>

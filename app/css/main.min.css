@@ -238,9 +238,15 @@ option {
   background: url('../img/main-window.png') 30% 40%;
 }
 .button-collapse {
-  position: absolute;
-  top: -50px;
-  left: 980px;
+  float: right;
+  -webkit-transform: translate(-220px, -50px);
+  -ms-transform: translate(-220px, -50px);
+  transform: translate(-220px, -50px);
+}
+@media screen and (max-width: 992px) {
+  .button-collapse {
+    display: none !important;
+  }
 }
 .cards__block {
   display: -webkit-box;
